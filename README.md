@@ -1,32 +1,69 @@
-# React + TypeScript + Vite
+# stockmiles-web
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Web app for StockMiles, a POS and inventory platform for retail businesses that restock through purchase trips. Built with React, TypeScript, Vite, Tailwind CSS v4, React Router and Zustand.
 
-Currently, two official plugins are available:
+The app never talks to the database. It calls the StockMiles API through `/api` on its own origin.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## What you need
 
-## React Compiler
+| Tool | Version |
+|---|---|
+| Node.js | 22 or newer |
+| pnpm | 10 or newer |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## First-time setup
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+git clone https://github.com/stockmilesapp-ai/stockmiles-web..git stockmiles-web
+cd stockmiles-web
+pnpm install
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Developer commands
+
+| Task | Command |
+|---|---|
+| Run the dev server | `pnpm dev` |
+| Type-check and build | `pnpm build` |
+| Lint | `pnpm lint` |
+| Preview the production build | `pnpm preview` |
+
+The dev server runs at `http://localhost:5173`.
+
+## How the app reaches the API
+
+The browser only calls `/api/*` on the web app's own origin, so there is no CORS setup and cookies stay first-party.
+
+- **In development**, the Vite dev server forwards `/api/*` to the deployed API, `https://stockmiles-api.vercel.app`. To use another API, set `API_PROXY_TARGET`:
+
+  ```bash
+  API_PROXY_TARGET=http://localhost:8000 pnpm dev
+  ```
+
+- **In production**, `vercel.json` rewrites `/api/*` to the deployed API. It also sends every other path to `index.html`, so client-side routes such as `/status` work when opened directly.
+
+## Project layout
+
+```
+src/
+  app/                 App entry and the router that combines feature routes
+  features/
+    <feature>/
+      <feature>.routes.tsx   Routes owned by the feature
+      <feature>.store.tsx    Zustand store owned by the feature
+      pages/                 Route-level components
+      components/            Components used only by this feature
+  shared/
+    components/        Components used by more than one feature
+    layouts/           Page shells (header, footer, outlet)
+  index.css            Tailwind import and design tokens
+public/                Static files served as-is
+```
+
+A feature has a routes file only if it has pages, and a store file only if it has state.
+
+Import from `src` with the `@/` alias, for example `@/shared/components/Container`.
+
+## Design tokens
+
+Colours and fonts are defined once in `src/index.css` under `@theme` and used as Tailwind classes, for example `bg-surface`, `text-fg-muted` and `text-brand-green-500`.

@@ -3,6 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://stockmiles-api.vercel.app/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

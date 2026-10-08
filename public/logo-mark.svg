@@ -1,0 +1,27 @@
+<svg width="512" height="512" viewBox="0 0 512 512" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>StockMiles mark</title>
+
+<g transform="translate(0,14)">
+<!-- location pin above the store: the miles travelled -->
+<circle cx="256" cy="80" r="20" fill="#10B981"/>
+<circle cx="256" cy="80" r="37" fill="none" stroke="#667EEA" stroke-width="6"/>
+
+<!-- awning -->
+<path d="M144 152 q0 -16 16 -16 h192 q16 0 16 16" fill="none" stroke="#667EEA" stroke-width="7" stroke-linecap="round"/>
+<path d="M144 152 h56 v42 a28 20 0 0 1 -56 0 z" fill="#10B981"/>
+<path d="M200 152 h56 v42 a28 20 0 0 1 -56 0 z" fill="#667EEA"/>
+<path d="M256 152 h56 v42 a28 20 0 0 1 -56 0 z" fill="#10B981"/>
+<path d="M312 152 h56 v42 a28 20 0 0 1 -56 0 z" fill="#667EEA"/>
+
+<!-- counter: display case holding stock, then countertop bar -->
+<rect x="188" y="332" width="34" height="74" rx="10" fill="#10B981"/>
+<rect x="239" y="332" width="34" height="74" rx="10" fill="#667EEA"/>
+<rect x="290" y="332" width="34" height="74" rx="10" fill="#10B981"/>
+<path d="M172 320 v84 q0 10 10 10 h148 q10 0 10 -10 v-84" fill="none" stroke="#667EEA" stroke-width="7" stroke-linecap="round"/>
+<rect x="148" y="300" width="216" height="22" rx="9" fill="#667EEA"/>
+
+<!-- a carton of stock sitting on the counter -->
+<rect x="222" y="232" width="68" height="68" rx="8" fill="#667EEA"/>
+<rect x="248" y="232" width="16" height="68" fill="#10B981"/>
+</g>
+</svg>
