@@ -27,3 +27,5 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+client_secret_429386317546-dj1rijkcqd6u0hv7kklok0vpdf8clt1v.apps.googleusercontent.com.json
