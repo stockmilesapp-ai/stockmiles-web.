@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router";
 import GoogleSignInButton from "@/features/auth/components/GoogleSignInButton";
+import UserMenu from "@/features/auth/components/UserMenu";
 import Container from "@/shared/components/Container";
 import Logo from "@/shared/components/Logo";
 
@@ -51,8 +52,11 @@ function PublicLayout() {
               </a>
             ))}
           </nav>
-          <div className="hidden sm:block">
-            <GoogleSignInButton showNotice={false} />
+          <div className="flex items-center gap-3">
+            <UserMenu showAdminLink />
+            <div className="hidden sm:block">
+              <GoogleSignInButton showMessages={false} />
+            </div>
           </div>
         </Container>
       </header>

@@ -1,7 +1,10 @@
+import { useAuthStore } from "@/features/auth/auth.store";
 import GoogleSignInButton from "@/features/auth/components/GoogleSignInButton";
 import Container from "@/shared/components/Container";
 
 function GetStarted() {
+  const user = useAuthStore((state) => state.user);
+
   return (
     <section className="py-20 sm:py-28">
       <Container>
@@ -10,7 +13,9 @@ function GetStarted() {
             Start with your next trip
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-white/85">
-            Sign in with your Google account. No password to remember.
+            {user
+              ? `You are signed in as ${user.name || user.email}.`
+              : "Sign in with your Google account. No password to remember."}
           </p>
           <div className="mt-8 flex justify-center">
             <GoogleSignInButton onDark />

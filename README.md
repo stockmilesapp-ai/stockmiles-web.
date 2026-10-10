@@ -19,6 +19,16 @@ cd stockmiles-web
 pnpm install
 ```
 
+Then copy the environment template and fill it in:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+|---|---|
+| `VITE_GOOGLE_CLIENT_ID` | Google OAuth Client ID, the same one the API uses. It is public. Never put the Client Secret in this project: every `VITE_` variable is shipped to the browser. |
+
 ## Developer commands
 
 | Task | Command |
@@ -41,6 +51,22 @@ The browser only calls `/api/*` on the web app's own origin, so there is no CORS
   ```
 
 - **In production**, `vercel.json` rewrites `/api/*` to the deployed API. It also sends every other path to `index.html`, so client-side routes such as `/status` work when opened directly.
+
+## Sign-in
+
+Sign-in uses Google Identity Services in redirect mode, so it happens in the same window:
+
+1. Google renders the button. Clicking it takes the browser to Google.
+2. Google sends its answer as a form POST to `/api/auth/google/callback`. That is an API endpoint, not a page: only a server can read a POST body, verify the token and set an `httpOnly` cookie.
+3. The API sets the session cookie and redirects the browser to the page `/auth/callback`.
+4. `/auth/callback` (`features/auth/pages/AuthCallbackPage.tsx`) shows a spinner while the app calls `/api/auth/me`, then sends the user to the path chosen by `landingPathFor` in `features/auth/landing.ts` (the admin portal for now). A failed sign-in returns to the home page with a message.
+
+Pages under `/admin` are wrapped in `RequireAuth`, which sends signed-out visitors to the home page.
+
+The Google OAuth client needs, for each address the app runs on:
+
+- **Authorized JavaScript origins:** the origin, for example `https://stockmiles-web.vercel.app`. For local work, both `http://localhost` and `http://localhost:5173`.
+- **Authorized redirect URIs:** the origin plus `/api/auth/google/callback`.
 
 ## Project layout
 

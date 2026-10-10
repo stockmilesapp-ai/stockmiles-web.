@@ -1,52 +1,70 @@
+import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/features/auth/auth.store";
+import {
+  googleClientId,
+  loadGoogleIdentity,
+} from "@/features/auth/googleIdentity";
 
 type GoogleSignInButtonProps = {
-  // Hide the notice where there is no room for it, such as the header.
-  showNotice?: boolean;
-  // Set when the button sits on a dark background, so the notice stays readable.
+  // Hide messages where there is no room for them, such as the header.
+  showMessages?: boolean;
+  // Set when the button sits on a dark background, so messages stay readable.
   onDark?: boolean;
 };
 
+// Renders Google's own button while signed out, and nothing otherwise.
+// Clicking it takes this window to Google and back; see googleIdentity.ts.
 function GoogleSignInButton({
-  showNotice = true,
+  showMessages = true,
   onDark = false,
 }: GoogleSignInButtonProps) {
-  const notice = useAuthStore((state) => state.notice);
-  const signInWithGoogle = useAuthStore((state) => state.signInWithGoogle);
+  const status = useAuthStore((state) => state.status);
+  const error = useAuthStore((state) => state.error);
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
+
+  useEffect(() => {
+    if (status !== "signedOut" || !googleClientId) return;
+
+    let cancelled = false;
+    loadGoogleIdentity()
+      .then((google) => {
+        if (cancelled || !buttonRef.current) return;
+        google.renderButton(buttonRef.current, {
+          type: "standard",
+          theme: "outline",
+          size: "large",
+          shape: "pill",
+          text: "signin_with",
+        });
+      })
+      .catch(() => {
+        if (!cancelled) setLoadFailed(true);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [status]);
+
+  if (status !== "signedOut") return null;
+
+  const message = !googleClientId
+    ? "Google sign-in is not configured."
+    : loadFailed
+      ? "Google sign-in could not load. Check your connection and reload."
+      : error;
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <button
-        type="button"
-        onClick={signInWithGoogle}
-        className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-3 rounded-full border border-border bg-bg px-5 text-sm font-semibold text-fg shadow-sm transition-colors hover:bg-surface-2"
-      >
-        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-          <path
-            fill="#4285F4"
-            d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.56 2.7-3.87 2.7-6.62z"
-          />
-          <path
-            fill="#34A853"
-            d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.9v2.33A9 9 0 0 0 9 18z"
-          />
-          <path
-            fill="#FBBC05"
-            d="M3.95 10.7A5.4 5.4 0 0 1 3.67 9c0-.59.1-1.17.28-1.7V4.97H.9A9 9 0 0 0 0 9c0 1.45.35 2.83.9 4.03z"
-          />
-          <path
-            fill="#EA4335"
-            d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .9 4.97l3.05 2.33C4.66 5.17 6.65 3.58 9 3.58z"
-          />
-        </svg>
-        Sign in with Google
-      </button>
-      {showNotice && notice && (
+      {/* Fixed height so the page does not jump when Google's button appears. */}
+      <div ref={buttonRef} className="h-11" />
+      {showMessages && message && (
         <p
-          role="status"
+          role="alert"
           className={`text-sm ${onDark ? "text-white/85" : "text-fg-muted"}`}
         >
-          {notice}
+          {message}
         </p>
       )}
     </div>
