@@ -21,16 +21,11 @@ const metadataOptions = [
 
 function MetadataPage() {
   const loadAllCodes = useAdminStore((state) => state.loadAllCodes);
-  const [selectedMetadata, setSelectedMetadata] = useState<any>(null);
+  const [selectedMetadata, setSelectedMetadata] = useState<string | null>(null);
 
   useEffect(() => {
     void loadAllCodes();
   }, [loadAllCodes]);
-
-  const handleMetadataSelect = (value: any) => {
-    console.log("Selected metadata option:", value);
-    setSelectedMetadata(value);
-  };
 
   const SelectedPanel = useMemo(
     () => metadataOptions.find((o) => o.value === selectedMetadata)?.component,
@@ -50,7 +45,7 @@ function MetadataPage() {
               <Select
                 options={metadataOptions}
                 value={selectedMetadata}
-                onChange={handleMetadataSelect}
+                onChange={setSelectedMetadata}
                 placeholder="Choose a type"
                 className="max-w-xs"
               />
