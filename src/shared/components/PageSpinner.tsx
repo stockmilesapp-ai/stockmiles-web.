@@ -12,7 +12,7 @@ function PageSpinner({ label }: PageSpinnerProps) {
     >
       <span
         aria-hidden="true"
-        className="size-10 animate-spin rounded-full border-4 border-border border-t-brand-green-500"
+        className="size-10 animate-spin rounded-full border-4 border-border border-t-primary"
       />
       <p className="text-sm font-medium text-fg-muted">{label}</p>
     </div>

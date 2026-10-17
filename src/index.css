@@ -1,17 +1,13 @@
 @import "tailwindcss";
+@import "./theme/theme.css";
 
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
   --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
   --font-script: "Dancing Script", cursive;
 
-  --color-bg: #f9fafb;
-  --color-surface: #ffffff;
-  --color-surface-2: #f2f4f7;
-  --color-fg: #101828;
-  --color-fg-muted: #667085;
-  --color-border: #e4e7ec;
-
+  /* Brand palette: logo, marketing pages and decorative accents. Anything
+     that carries meaning (actions, states, focus) uses the theme roles. */
   --color-brand-green-500: #2fbf71;
   --color-brand-green-600: #26a05e;
   --color-brand-green-700: #1d7a47;
@@ -19,6 +15,36 @@
   --color-brand-lavender-500: #7b7fe0;
   --color-brand-lavender-600: #6165c9;
   --color-brand-lavender-700: #4d51a8;
+}
+
+/* Theme roles from theme/theme.css, as Tailwind colours (bg-primary, …). */
+@theme inline {
+  --color-bg: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--foreground);
+  --color-fg-muted: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-strong: var(--primary-strong);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-strong: var(--secondary-strong);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-strong: var(--success-strong);
+  --color-danger: var(--danger);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-danger-strong: var(--danger-strong);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-strong: var(--warning-strong);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-strong: var(--info-strong);
 }
 
 html {

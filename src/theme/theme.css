@@ -1,0 +1,55 @@
+/*
+ * StockMiles theme: every colour the admin app uses, by role.
+ *
+ * Components never name a raw colour. They use the roles below through
+ * Tailwind classes such as bg-primary, text-danger-strong, border-border.
+ * A different theme overrides these variables, for example:
+ *
+ *   [data-theme="ocean"] { --primary: #1570ef; --primary-strong: #175cd3; }
+ *
+ * and is switched on with <html data-theme="ocean">.
+ *
+ * Each colour role has three values:
+ *   --<role>             fill: solid buttons, badges, checked boxes
+ *   --<role>-foreground  text and icons drawn on the fill
+ *   --<role>-strong      text, icons and borders on a light background
+ * Tints come from opacity: bg-primary/10, hover:bg-danger/90.
+ *
+ * Default values follow the Untitled UI admin palette, with the StockMiles
+ * brand green as primary.
+ */
+:root {
+  /* Neutrals */
+  --background: #f9fafb;
+  --surface: #ffffff;
+  --surface-2: #f2f4f7;
+  --foreground: #101828;
+  --muted-foreground: #667085;
+  --border: #e4e7ec;
+  --ring: #7b7fe0;
+
+  /* Roles */
+  --primary: #26a05e;
+  --primary-foreground: #ffffff;
+  --primary-strong: #1d7a47;
+
+  --secondary: #f2f4f7;
+  --secondary-foreground: #344054;
+  --secondary-strong: #344054;
+
+  --success: #079455;
+  --success-foreground: #ffffff;
+  --success-strong: #067647;
+
+  --danger: #d92d20;
+  --danger-foreground: #ffffff;
+  --danger-strong: #b42318;
+
+  --warning: #f79009;
+  --warning-foreground: #101828;
+  --warning-strong: #b54708;
+
+  --info: #1570ef;
+  --info-foreground: #ffffff;
+  --info-strong: #175cd3;
+}
