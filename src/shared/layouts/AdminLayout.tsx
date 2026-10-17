@@ -1,5 +1,6 @@
 import {
   Boxes,
+  Braces,
   Building2,
   LayoutDashboard,
   Package,
@@ -25,6 +26,7 @@ const navItems: NavItem[] = [
   { label: "Products", icon: Package },
   { label: "Stock", icon: Boxes },
   { label: "Sales", icon: Receipt },
+  { label: "Metadata", icon: Braces, to: "/admin/metadata" },
 ];
 
 const itemClasses =
@@ -56,7 +58,7 @@ function AdminLayout() {
                 className={({ isActive }) =>
                   `${itemClasses} ${
                     isActive
-                      ? "bg-brand-green-500/10 text-brand-green-700"
+                      ? "bg-primary/10 text-primary-strong"
                       : "text-fg hover:bg-surface-2"
                   }`
                 }
