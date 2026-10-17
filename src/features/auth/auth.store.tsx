@@ -22,23 +22,34 @@ type AuthState = {
   signOut: () => Promise<void>;
 };
 
+// The /auth/me request in progress, shared by every caller. React StrictMode
+// runs effects twice in development, so without this a page load asks twice.
+// A call made after the answer arrives asks again, so the state can be
+// refreshed on purpose.
+let currentUserRequest: Promise<void> | null = null;
+
 export const useAuthStore = create<AuthState>((set) => ({
   status: "loading",
   user: null,
   signingOut: false,
   error: null,
 
-  loadCurrentUser: async () => {
-    try {
-      const response = await fetch("/api/auth/me");
-      if (response.ok) {
-        set({ status: "signedIn", user: await response.json() });
-        return;
+  loadCurrentUser: () => {
+    currentUserRequest ??= (async () => {
+      try {
+        const response = await fetch("/api/auth/me");
+        if (response.ok) {
+          set({ status: "signedIn", user: await response.json() });
+          return;
+        }
+      } catch {
+        // Network failure: treat as signed out; signing in will surface it.
       }
-    } catch {
-      // Network failure: treat as signed out; signing in will surface it.
-    }
-    set({ status: "signedOut", user: null });
+      set({ status: "signedOut", user: null });
+    })().finally(() => {
+      currentUserRequest = null;
+    });
+    return currentUserRequest;
   },
 
   failSignIn: () => set({ error: "Sign-in did not work. Please try again." }),
